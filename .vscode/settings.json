@@ -1,3 +1,16 @@
 {
-    "python.pythonPath": ".venv/bin/python3.8"
+    "python.analysis.extraPaths": [
+        "beat2d",
+        "scripts"
+    ],
+    "python.linting.enabled": true,
+    "editor.formatOnSave": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": ["--max-line-length", "110", "--ignore", "E203"],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "110"
+    ],
+    "python.pythonPath": "/home/jason/miniconda3/envs/beat2d/bin/python"
 }
