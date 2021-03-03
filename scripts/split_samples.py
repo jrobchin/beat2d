@@ -4,7 +4,7 @@ import argparse
 from librosa.core import load
 import soundfile as sf
 
-from beat2d import settings, split
+from beat2d import settings, slicing
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
 
     sample = load(inputpath, settings.SAMPLE_RATE)[0]
 
-    oneshots = split.split_oneshots(sample, settings.SAMPLE_RATE)
+    oneshots = slicing.split_oneshots(sample, settings.SAMPLE_RATE)
 
     # Save each oneshot to a separate audio file
     num_digits = len(str(len(oneshots)))  # Number of digits for the file name

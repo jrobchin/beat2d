@@ -6,34 +6,31 @@ import librosa
 from beat2d import settings
 
 
-def get_onsets(
-    sample: np.ndarray, sr: int = settings.SAMPLE_RATE
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    onset_envelope = librosa.onset.onset_strength(sample, sr=sr)
-
-    onsets = librosa.util.peak_pick(onset_envelope, 10, 10, 10, 10, 0.25, 5)
-    onsets = librosa.onset.onset_backtrack(onsets, onset_envelope)
-
-    return onsets
-
-
 def calc_slice_points(sample: np.ndarray, sr: int = settings.SAMPLE_RATE) -> List[Tuple[int, int]]:
     """Return a list of tuples of slice points in samples."""
     slice_points: List[Tuple[int, int]] = []
 
     # Calculate the onsets
-    onsets = get_onsets(sample, sr)
-
-    # Convert onset times to samples
-    onset_samples = librosa.frames_to_samples(onsets)
+    onsets = librosa.onset.onset_detect(
+        sample,
+        sr,
+        backtrack=True,
+        units="samples",
+        pre_max=10,
+        post_max=1,
+        pre_avg=3,
+        post_avg=1,
+        delta=0.2,
+        wait=10,
+    )
 
     # Loop over each onset to the second last one
-    for idx, _ in enumerate(onset_samples[:-1]):
-        slice_pair: Tuple[int, int] = (onset_samples[idx], onset_samples[idx + 1])
+    for idx, _ in enumerate(onsets[:-1]):
+        slice_pair: Tuple[int, int] = (onsets[idx], onsets[idx + 1])
         slice_points.append(slice_pair)
 
     # Need one slice point from the last onset to the end of the audio
-    slice_points.append((onset_samples[-1], len(sample) - 1))
+    slice_points.append((onsets[-1], len(sample) - 1))
 
     return slice_points
 
