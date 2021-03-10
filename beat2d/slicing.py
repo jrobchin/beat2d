@@ -159,6 +159,10 @@ def calc_slice_points(sample: np.ndarray, sr: int = settings.SAMPLE_RATE) -> Lis
 def split_oneshots(
     sample: np.ndarray, sr: int = settings.SAMPLE_RATE
 ) -> Tuple[np.ndarray, List[Tuple[int, int]]]:
+    """Slice a `sample` into oneshots based on the onset envelope of the waveform.
+
+    Returns a tuple: (slices, slice_points).
+    """
     # Get slice points
     slice_points: List[Tuple[int, int]] = calc_slice_points(sample, sr)
 
