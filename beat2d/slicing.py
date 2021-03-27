@@ -143,7 +143,18 @@ def calc_slice_points(sample: np.ndarray, sr: int = settings.SAMPLE_RATE) -> Lis
     slice_points: List[Tuple[int, int]] = []
 
     # Calculate the onsets
-    onsets = librosa.onset.onset_detect(sample, sr, backtrack=True, units="samples")
+    onsets = librosa.onset.onset_detect(
+        sample,
+        sr,
+        backtrack=True,
+        units="samples",
+        # pre_max=7,
+        # post_max=7,
+        # pre_avg=3,
+        # post_avg=3,
+        # delta=0.15,
+        wait=10,
+    )
 
     # Loop over each onset to the second last one
     for idx, _ in enumerate(onsets[:-1]):

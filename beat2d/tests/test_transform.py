@@ -13,7 +13,7 @@ TEST_SEQUENCE = os.path.join(os.path.dirname(__file__), "kskks.wav")
 
 class TestTransform(TestCase):
     def test_beatbox_to_notes(self):
-        model_mock: beat2d.model.BeatNetBase = MagicMock(beat2d.model.BeatNetBase)
+        model_mock: beat2d.model.Beat2dNetBase = MagicMock(beat2d.model.Beat2dNetBase)
 
         model_mock.predict.side_effect = [
             beat2d.CLASSES.KICK,

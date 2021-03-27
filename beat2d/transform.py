@@ -40,7 +40,7 @@ class Note:
 
 
 def beatbox_to_notes(
-    classifier: beat2d.model.BeatNetBase,
+    classifier: beat2d.model.Beat2dNetBase,
     sample: np.ndarray,
     sr: int = beat2d.settings.SAMPLE_RATE,
 ) -> List[Note]:
@@ -54,7 +54,9 @@ def beatbox_to_notes(
 
         length: float = end_time - start_time
 
-        pred: beat2d.CLASSES = classifier.predict(slc)
+        pred: beat2d.CLASSES
+        conf: float
+        pred, conf = classifier.predict(slc)
 
         if pred == beat2d.CLASSES.NONE:
             continue
@@ -109,7 +111,7 @@ def notes_to_audio(
 
 
 def beatbox_to_audio(
-    classifier: beat2d.model.BeatNetBase,
+    classifier: beat2d.model.Beat2dNetBase,
     beatbox_waveform: np.ndarray,
     samples: Dict[NOTES, np.ndarray],
     sr: int = beat2d.settings.SAMPLE_RATE,
